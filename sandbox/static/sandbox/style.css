@@ -1,0 +1,8 @@
+body {
+    background-color: #E7EACB;
+}
+
+.required::after {
+    content: "*";
+    color: red;
+}
