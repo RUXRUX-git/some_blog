@@ -1,0 +1,58 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="chat">
+        <div class="chat-content">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message|get_item:'author' != user.get_username %}
+                        <div class="chat-message mx-auto">
+                            <div class="message-content alert alert-secondary float-start">
+                                <p class="text-start">{{ message|get_item:'text' }}</p>
+                            </div>
+                            <div style="clear: both"></div>
+                            {% if message|get_item:'image' %}
+                                <img style="max-width: 50%"
+                                     class="rounded float-start"
+                                     src="{{ message|get_item:'image' }}" alt="">
+                                <div style="clear: both"></div>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="chat-message mx-auto">
+                            <div class="message-content alert alert-secondary float-end">
+                                <p class="text-end">{{ message|get_item:'text' }}</p>
+                            </div>
+                            <div style="clear: both"></div>
+                            {% if message|get_item:'image' %}
+                                <img style="max-width: 50%"
+                                     class="rounded float-end"
+                                     src="{{ message|get_item:'image' }}" alt="">
+                                <div style="clear: both"></div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <p>Сообщения</p>
+        {% if user.is_authenticated %}
+            {{ user.id }}
+        {% endif %}
+        <div class="message-sending">
+            <form id="send_message_form" enctype="multipart/form-data" action="{% url 'create_message' %}"
+                  method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" id="input_recipient_field" name="recipient" class="d-none" readonly
+                           value="{{ username }}">
+                    <input type="text" id="input_message_text" name="text" class="form-control"
+                           placeholder="Сообщение..." aria-label="Сообщение...">
+                    <input class="form-control" type="file" id="input_message_image" name="image" accept="image/*">
+                    <input type="submit" value="Отправить">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

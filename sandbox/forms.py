@@ -7,7 +7,7 @@ from sandbox.models import Message
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ('recipient', 'text', 'image',)
+        fields = ('author', 'recipient', 'text', 'image',)
 
 
 class UserForm(forms.ModelForm):
